@@ -65,3 +65,13 @@ MATCH (p:Perusahaan)
 WITH p.nama AS NamaPerusahaan, p.kako_id AS KodeKabKota, p.prov_id AS KodeProv, p.kbli AS KodeKBLI, COUNT(p) AS counter
 WHERE counter > 1
 RETURN NamaPerusahaan, counter AS JumlahDuplikasi;
+
+// Use Case 8
+// Description: Daftar perusahaan yang ada di sekitar lokasi tertentu berdasarkan koordinat Latitude dan Longitude
+// Contoh LokasiSaya = Monumen Nasional: Latitude: -6.1753924 dan Longitude: 106.8271528
+// Radius 5 km = 5000 m
+WITH point({latitude: -6.1753924, longitude: 106.8271528}) AS LokasiSaya
+MATCH (p:Perusahaan)
+WHERE point.distance(point({latitude: toFloat(p.latitude), longitude: toFloat(p.longitude)}), LokasiSaya) <= 5000 // 5 km
+RETURN p.nama AS NamaPerusahaan, p.latitude AS Latitude, p.longitude AS Longitude, point.distance(point({latitude: toFloat(p.latitude), longitude: toFloat(p.longitude)}), LokasiSaya) AS JarakPerusahaanKeLokasiSaya
+ORDER BY JarakPerusahaanKeLokasiSaya;
