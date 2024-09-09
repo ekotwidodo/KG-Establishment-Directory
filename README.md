@@ -14,7 +14,7 @@ Berikut ini adalah daftar use cases yang dilakukan pada penelitian ini:
 
 1. Daftar perusahaan yang mempunyai kode KBLI yang sama
 2. Daftar perusahaan yang mempunyai kategori KBLI yang sama
-3. Daftar perusahaan yang mempunyai golongan KBLI yang sama
+3. Daftar perusahaan yang mempunyai golongan pokok KBLI yang sama
 4. Daftar perusahaan yang berada di provinsi yang sama
 5. Daftar perusahaan yang berada di kabupaten/kota yang sama
 6. Daftar perusahaan yang tidak memiliki kode KBLI
