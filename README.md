@@ -60,6 +60,10 @@ BASE_URL_KBLI_BPS='your-base-url-kbli-bps'
 
 Jalankan `notebooks` terlebih dahulu untuk proses data scrapping dan data pre-processing. Kemudian, hasilnya akan beradata di folder `datasets` dimana nantinya akan dilakukan proses konstruksi graf pengetahuan melalui cypher query yang ada di folder `queries`. Gunakan AuraDB yang tersedia pada Neo4j atau bisa memanfaatkan Neo4j Desktop. Download hasil graf pengetahuan bisa disimpan ke dalam `dumps` apabila ingin mencoba tanpa harus melakukan pengaturan. Folder `schema` berisi arsitektur dan bagaimana pemodelan graf pengetahuan dibangun.
 
+Alur:
+
+`notebooks > datasets > queries > dumps`
+
 ## Tim Peneliti
 
 - Yoga Cahya Putra
