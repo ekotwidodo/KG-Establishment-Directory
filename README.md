@@ -23,11 +23,30 @@ Berikut ini adalah daftar use cases yang dilakukan pada penelitian ini:
 
 ## How to Install
 
-```bash
-python.exe -m pip install --upgrade pip
+1. Buat environment
 
-pip install -r requirements.txt
+```bash
+python -m venv venv
 ```
+
+Aktivasi:
+
+```bash
+source venv/Scripts/activate # windows
+
+source venv/bin/activate # mac/linux
+```
+
+2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+
+# update pip jika diperlukan
+python.exe -m pip install --upgrade pip
+```
+
+3. Buat file `.env`
 
 File `.env` berisi:
 
