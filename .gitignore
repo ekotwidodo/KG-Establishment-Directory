@@ -1,0 +1,7 @@
+venv
+env
+.env
+
+notebooks/establishments/data/*
+notebooks/kbli/data/*
+notebooks/regions/data/*

@@ -1,6 +1,12 @@
-# KG for Establishment Directory
+# Kontruksi Graf Pengetahuan pada Direktori Perusahaan menggunakan Basis Data Graf Neo4j (_Construction of Establishment Directory Knowledge Graph using Graph Database Neo4j_)
 
-Penelitian ini mengangkat issue tentang kurangnya pemanfaatan direktori perusahaan.
+## Tentang Penelitian
+
+Penelitian ini mengangkat issue tentang kurangnya pemanfaatan direktori perusahaan. Repository ini merupakan implementasi dari konstruksi graf pengetahuan pada direktori perusahaan.
+
+## Abstrak
+
+Penelitian ini membahas pentingnya integrasi data direktori perusahaan di Indonesia melalui pendekatan graf pengetahuan (knowledge graph) menggunakan Neo4j. Direktori perusahaan, yang berisi informasi dasar seperti nama, alamat, dan kode Klasifikasi Baku Lapangan Usaha Indonesia (KBLI), sering kali tersebar dalam berbagai format dan sumber yang berbeda, sehingga menyulitkan analisis data yang komprehensif. Penelitian ini mengusulkan penggunaan graf pengetahuan sebagai solusi untuk mengatasi keterbatasan dalam integrasi data berbasis Relational Database Management System (RDBMS), dengan menonjolkan fleksibilitas dan efisiensi Neo4j dalam menangani data kompleks dan melakukan kueri yang intuitif. Studi kasus dalam penelitian ini menunjukkan bahwa graf pengetahuan dapat digunakan untuk mengidentifikasi pola dan hubungan signifikan antara entitas perusahaan, membantu dalam pemetaan industri, perencanaan ekonomi regional, serta mendukung pengambilan keputusan berbasis data. Meskipun demikian, penelitian ini juga mengidentifikasi beberapa tantangan dalam pengumpulan dan transformasi data, yang memerlukan penelitian lanjutan untuk meningkatkan penerapan graf pengetahuan di masa depan.
 
 ## Daftar Use Cases
 
@@ -14,6 +20,26 @@ Berikut ini adalah daftar use cases yang dilakukan pada penelitian ini:
 6. Daftar perusahaan yang tidak memiliki kode KBLI
 7. Pengecekan adanya duplikasi perusahaan berdasarkan nama, kabupaten, provinsi, dan kode KBLI
 8. Daftar perusahaan yang ada di sekitar lokasi tertentu berdasarkan koordinat Latitude dan Longitude
+
+## How to Install
+
+```bash
+python.exe -m pip install --upgrade pip
+
+pip install -r requirements.txt
+```
+
+File `.env` berisi:
+
+```bash
+GOOGLE_API_KEY='your-google-api-key'
+WEBAPI_BPS_API_KEY='your-web-api-key'
+BASE_URL_KEMPERIN='your-base-url-kemenperin'
+BASE_URL_WEBAPI_BPS='your-base-url-webapi-bps'
+BASE_URL_KBLI_BPS='your-base-url-kbli-bps'
+```
+
+Jalankan `notebooks` terlebih dahulu untuk proses data scrapping dan data pre-processing. Kemudian, hasilnya akan beradata di folder `datasets` dimana nantinya akan dilakukan proses konstruksi graf pengetahuan melalui cypher query yang ada di folder `queries`. Gunakan AuraDB yang tersedia pada Neo4j atau bisa memanfaatkan Neo4j Desktop. Download hasil graf pengetahuan bisa disimpan ke dalam `dumps` apabila ingin mencoba tanpa harus melakukan pengaturan. Folder `schema` berisi arsitektur dan bagaimana pemodelan graf pengetahuan dibangun.
 
 ## Tim Peneliti
 
