@@ -7,17 +7,20 @@ RETURN e,r,b;
 
 // Use Case 2
 // Description: Daftar perusahaan yang mempunyai kategori KBLI yang sama
-MATCH (e:Perusahaan)-[r1:MEMILIKI_KELOMPOK_KBLI]->(b:Kelompok_KBLI)-[r2:MEMILIKI_KATEGORI]->(c:Kategori_KBLI)
+MATCH (e:Perusahaan)-[r1:MEMILIKI_KELOMPOK_KBLI]->(b:Kelompok_KBLI)
+MATCH (b)-[r2:MEMILIKI_KATEGORI]->(c:Kategori_KBLI)
 RETURN e,r2,c;
 
 // Use Case 3
 // Description: Daftar perusahaan yang mempunyai golongan pokok KBLI yang sama
-MATCH (e:Perusahaan)-[r1:MEMILIKI_KELOMPOK_KBLI]->(b:Kelompok_KBLI)-[r2:MEMILIKI_GOLONGAN_POKOK]->(g:Golongan_Pokok_KBLI)
+MATCH (e:Perusahaan)-[r1:MEMILIKI_KELOMPOK_KBLI]->(b:Kelompok_KBLI)
+MATCH (b)-[r2:MEMILIKI_GOLONGAN_POKOK]->(g:Golongan_Pokok_KBLI)
 RETURN e,r2,g;
 
 // Use Case 4
 // Description: Daftar perusahaan yang berada di provinsi yang sama
-MATCH (e:Perusahaan)-[r1:BEROPERASI_DI]->(r:Kabupaten_Kota)-[r2:BERADA_DI]->(p:Provinsi)
+MATCH (e:Perusahaan)-[r1:BEROPERASI_DI]->(r:Kabupaten_Kota)
+MATCH (r)-[r2:BERADA_DI]->(p:Provinsi)
 RETURN e,r2,p;
 
 // Use Case 5
@@ -30,6 +33,15 @@ RETURN e,r1,r;
 MATCH (e:Perusahaan)
 WHERE NOT (e)-[:MEMILIKI_KELOMPOK_KBLI]->(:Kelompok_KBLI)
 RETURN e;
+
+// Use Case 7
+// Description: Pengecekan adanya duplikasi perusahaan berdasarkan nama, kabupaten, provinsi, dan kelompok KBLI
+MATCH (e:Perusahaan)-[r1:BEROPERASI_DI]->(r:Kabupaten_Kota)
+MATCH (r)-[r2:BERADA_DI]->(p:Provinsi)
+MATCH (e)-[r3:MEMILIKI_KELOMPOK_KBLI]->(b:Kelompok_KBLI)
+WITH e.nama AS NamaPerusahaan, r.kode AS KodeKabKota, p.kode AS KodeProv, b.kode AS KodeKelompokKBLI, COUNT(p) AS counter
+WHERE counter > 1
+RETURN NamaPerusahaan, counter AS JumlahDuplikasi;
 
 // Use Case 8
 // Description: Daftar perusahaan yang ada di sekitar lokasi tertentu berdasarkan koordinat Latitude dan Longitude

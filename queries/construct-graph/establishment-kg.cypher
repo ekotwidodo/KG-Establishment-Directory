@@ -57,40 +57,42 @@ SET b.nama = row.nama, b.url = row.url;
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/regions/relasi_kabupaten_provinsi.csv' AS row
 MATCH (r:Kabupaten_Kota {kode: row.kabupaten_kode})
 MATCH (p:Provinsi {kode: row.provinsi_kode})
-MERGE (r)-[:BERADA_DI]->(p);
+MERGE (r)-[:TERLETAK_DI]->(p);
 
 // Relasi perusahaan dengan kabupaten/kota
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/regions/relasi_perusahaan_kabupaten.csv' AS row
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/regions/relasi_perusahaan_kabupaten_provinsi.csv' AS row
 MATCH (e:Perusahaan {id: row.id_perusahaan})
 MATCH (r:Kabupaten_Kota {kode: row.kabupaten_kode})
-MERGE (e)-[:BEROPERASI_DI]->(r);
-
-// Relasi kelompok KBLI dengan kategori KBLI
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/relasi_kelompok_kategori_kbli.csv' AS row
-MATCH (b:Kelompok_KBLI {kode: row.kelompok_kbli_kode})
-MATCH (c:Kategori_KBLI {kode: row.kategori_kbli_kode})
-MERGE (b)-[:MEMILIKI_KATEGORI]->(c);
-
-// Relasi kelompok KBLI dengan golongan pokok KBLI
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/relasi_kelompok_golongan_pokok_kbli.csv' AS row
-MATCH (b:Kelompok_KBLI {kode: row.kelompok_kbli_kode})
-MATCH (g:Golongan_Pokok_KBLI {kode: row.golongan_pokok_kbli_kode})
-MERGE (b)-[:MEMILIKI_GOLONGAN_POKOK]->(g);
-
-// Relasi kelompok KBLI dengan golongan KBLI
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/relasi_kelompok_golongan_kbli.csv' AS row
-MATCH (b:Kelompok_KBLI {kode: row.kelompok_kbli_kode})
-MATCH (k:Golongan_KBLI {kode: row.golongan_kbli_kode})
-MERGE (b)-[:MEMILIKI_GOLONGAN]->(k);
-
-// Relasi kelompok KBLI dengan subgolongan KBLI
-LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/relasi_kelompok_subgolongan_kbli.csv' AS row
-MATCH (b:Kelompok_KBLI {kode: row.kelompok_kbli_kode})
-MATCH (s:Subgolongan_KBLI {kode: row.subgolongan_kbli_kode})
-MERGE (b)-[:MEMILIKI_GOLONGAN]->(s);
+MATCH (p:Provinsi {kode: row.provinsi_kode})
+MERGE (e)-[:BERLOKASI_DI]->(r)
+MERGE (e)-[:BERLOKASI_DI]->(p);
 
 // Relasi perusahan dengan kelompok KBLI
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/relasi_perusahaan_kelompok_kbli.csv' AS row
 MATCH (e:Perusahaan {id: row.id_perusahaan})
 MATCH (b:Kelompok_KBLI {kode: row.kelompok_kbli_kode})
 MERGE (e)-[:MEMILIKI_KELOMPOK_KBLI]->(b);
+
+// Relasi kelompok KBLI dengan kategori KBLI
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/relasi_kelompok_kategori_kbli.csv' AS row
+MATCH (b:Kelompok_KBLI {kode: row.kelompok_kbli_kode})
+MATCH (c:Kategori_KBLI {kode: row.kategori_kbli_kode})
+MERGE (b)-[:TERMASUK_KATEGORI]->(c);
+
+// Relasi kelompok KBLI dengan golongan pokok KBLI
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/relasi_kelompok_golongan_pokok_kbli.csv' AS row
+MATCH (b:Kelompok_KBLI {kode: row.kelompok_kbli_kode})
+MATCH (g:Golongan_Pokok_KBLI {kode: row.golongan_pokok_kbli_kode})
+MERGE (b)-[:TERMASUK_GOLONGAN_POKOK]->(g);
+
+// Relasi kelompok KBLI dengan golongan KBLI
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/relasi_kelompok_golongan_kbli.csv' AS row
+MATCH (b:Kelompok_KBLI {kode: row.kelompok_kbli_kode})
+MATCH (k:Golongan_KBLI {kode: row.golongan_kbli_kode})
+MERGE (b)-[:TERMASUK_GOLONGAN]->(k);
+
+// Relasi kelompok KBLI dengan subgolongan KBLI
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/relasi_kelompok_subgolongan_kbli.csv' AS row
+MATCH (b:Kelompok_KBLI {kode: row.kelompok_kbli_kode})
+MATCH (s:Subgolongan_KBLI {kode: row.subgolongan_kbli_kode})
+MERGE (b)-[:TERMASUK_SUBGOLONGAN]->(s);
