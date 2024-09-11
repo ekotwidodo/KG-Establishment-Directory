@@ -64,6 +64,14 @@ Alur:
 
 `notebooks > datasets > queries > dumps`
 
+```bash
+NEO4J_URI='neo4j-uri'
+NEO4J_USERNAME='neo4j-username'
+NEO4J_PASSWORD='neo4j-password'
+AURA_INSTANCEID='neo4j-instance-id'
+AURA_INSTANCENAME='neo4j-instance-name'
+```
+
 ## Tim Peneliti
 
 - Yoga Cahya Putra
