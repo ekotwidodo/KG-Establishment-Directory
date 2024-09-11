@@ -2,7 +2,8 @@
 
 CREATE CONSTRAINT FOR (e:Perusahaan) REQUIRE e.id IS UNIQUE;
 CREATE CONSTRAINT FOR (p:Provinsi) REQUIRE p.kode IS UNIQUE;
-CREATE CONSTRAINT FOR (r:Kabupaten_Kota) REQUIRE r.kode IS UNIQUE;
+CREATE CONSTRAINT FOR (i:Pulau) REQUIRE i.nama IS UNIQUE;
+CREATE CONSTRAINT FOR (m:Kabupaten_Kota) REQUIRE m.kode IS UNIQUE;
 CREATE CONSTRAINT FOR (c:Kategori_KBLI) REQUIRE c.kode IS UNIQUE;
 CREATE CONSTRAINT FOR (g:Golongan_Pokok_KBLI) REQUIRE g.kode IS UNIQUE;
 CREATE CONSTRAINT FOR (k:Golongan_KBLI) REQUIRE k.kode IS UNIQUE;
@@ -23,8 +24,12 @@ SET p.nama = row.nama;
 
 // Load Kabupaten/Kota
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/regions/kabupaten.csv' AS row
-MERGE (r:Kabupaten_Kota {kode: row.kode})
-SET r.nama = row.nama;
+MERGE (m:Kabupaten_Kota {kode: row.kode})
+SET m.nama = row.nama;
+
+// Load Pulau
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/regions/pulau.csv' AS row
+MERGE (i:Pulau {nama: row.pulau_nama})
 
 // Load Kategori KBLI
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/kbli/kategori_kbli.csv' AS row
@@ -55,16 +60,28 @@ SET b.nama = row.nama, b.url = row.url;
 
 // Relasi kabupaten/kota dengan provinsi
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/regions/relasi_kabupaten_provinsi.csv' AS row
-MATCH (r:Kabupaten_Kota {kode: row.kabupaten_kode})
+MATCH (m:Kabupaten_Kota {kode: row.kabupaten_kode})
 MATCH (p:Provinsi {kode: row.provinsi_kode})
-MERGE (r)-[:TERLETAK_DI]->(p);
+MERGE (m)-[:TERLETAK_DI]->(p);
+
+// Relasi provinsi dengan pulau
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/regions/relasi_provinsi_pulau.csv' AS row
+MATCH (p:Provinsi {kode: row.provinsi_kode})
+MATCH (i:Pulau {nama: row.pulau})
+MERGE (p)-[:TERLETAK_DI]->(i);
+
+// Relasi provinsi bersebelahan dengan provinsi lain
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/regions/relasi_provinsi_bersebelahan.csv' AS row
+MATCH (p1:Provinsi {kode: row.provinsi_kode})
+MATCH (p2:Provinsi {kode: row.provinsi_tetangga})
+MERGE (p1)-[:BERSEBELAHAN_DENGAN]->(p2);
 
 // Relasi perusahaan dengan kabupaten/kota
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/ekotwidodo/establishment-directory-kg/main/datasets/regions/relasi_perusahaan_kabupaten_provinsi.csv' AS row
 MATCH (e:Perusahaan {id: row.id_perusahaan})
-MATCH (r:Kabupaten_Kota {kode: row.kabupaten_kode})
+MATCH (m:Kabupaten_Kota {kode: row.kabupaten_kode})
 MATCH (p:Provinsi {kode: row.provinsi_kode})
-MERGE (e)-[:BERLOKASI_DI]->(r)
+MERGE (e)-[:BERLOKASI_DI]->(m)
 MERGE (e)-[:BERLOKASI_DI]->(p);
 
 // Relasi perusahan dengan kelompok KBLI
